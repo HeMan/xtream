@@ -1,0 +1,13 @@
+git clone 
+virtualenv -p python3 xtream
+cd xtream
+. bin/activate
+pip install -r requirements.txt
+
+cd reports
+./manage.py migrate
+./manage.py makemigrations projects
+./manage.py sqlmigrate projects 0001
+./manage.py migrate
+./manage.py createsuperuser
+./manage.py runserver

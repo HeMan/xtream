@@ -1,0 +1,61 @@
+<html>
+<head>
+{% ember_full_js %}
+</head>
+<body>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{{ project.name }}
+
+<form action="{% url 'projects:project' project.id %}" method="post">
+    {% csrf_token %}
+    {% for observation in project.observation_set.all %}
+        <div class="observation">
+            Observation
+            <div class="observationimage">
+                <img src="/static/projects/{{ observation.picture }}"/>
+            </div>
+            <div class="observationinfo">
+                <label for="grade{{ forloop.counter }}">Grade: </label><input type="text" name="grade" id="grade{{ forloop.counter }}" value="{{ observation.grade }}" />
+                <label for="comment{{ forloop.counter }}">Comment: </label><input type="text" name="comment" id="observation{{ forloop.counter }}" value="{{ observation.comment }}" />
+                <label for="distance{{ forloop.counter }}">Distance: </label><input type="text" name="distance" id="observation{{ forloop.counter }}" value="{{ observation.distance }}" />
+            </div>
+            <br />
+        </div>
+        <div class="pipe">
+            <label for="address{{ forloop.counter }}">Location: </label><input type="text" name="address" id="address{{ forloop.counter }}" value="{{ observation.pipe.location.address }}" />
+            <label for="pipe_dimension{{ forloop.counter }}">Pipe dimension: </label><input type="text" name="pipe_dimension" id="pipe_dimension{{ forloop.counter }}" value="{{ observation.pipe.pipe_dimension }}" />
+            <label for="spillwater{{ forloop.counter }}">Spillwater: </label><input type="checkbox" name="spillwater" id="spillwater{{ forloop.counter }}" {% if observation.pipe.spillwater %}checked{% endif %} />
+            <label for="daywater{{ forloop.counter }}">daywater: </label><input type="checkbox" name="daywater" id="daywater{{ forloop.counter }}" {% if observation.pipe.daywater %}checked{% endif %} />
+            <label for="upstream{{ forloop.counter }}">upstream: </label><input type="checkbox" name="upstream" id="upstream{{ forloop.counter }}" {% if observation.pipe.upstream %}checked{% endif %} />
+            <label for="cleansed_before{{ forloop.counter }}">cleansed_before: </label><input type="checkbox" name="cleansed_before" id="cleansed_before{{ forloop.counter }}" {% if observation.pipe.cleansed_before %}checked{% endif %} />
+            <label for="previously_inspected{{ forloop.counter }}">previously_inspected: </label><input type="checkbox" name="previously_inspected" id="previously_inspected{{ forloop.counter }}" {% if observation.pipe.previously_inspected %}checked{% endif %} />
+            <!---
+            {{ observation.pipe.location.address }}
+            {{ observation.pipe.pipe_dimension }}
+            {{ observation.pipe.spillwater }}
+            {{ observation.pipe.daywater }}
+            {{ observation.pipe.upstream }}
+            {{ observation.pipe.cleansed_before }}
+            {{ observation.pipe.previously_inspected }}
+            -->
+        </div>
+            
+    {% endfor %}
+    <input type="submit" value="Update" />
+</form>
+        
+{% if project.observation_set %}
+<br />
+{% for observation in project.observation_set.all %}
+Comment: {{ observation.comment }}
+<br/>
+Grade: {{ observation.grade }}
+<br/>
+Pipe location: {{ observation.pipe.location.address }}
+<br/>
+{% endfor %}
+{% endif %}
+
+</body>
+</html>

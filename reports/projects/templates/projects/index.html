@@ -1,0 +1,16 @@
+<html>
+<head>
+{% ember_full_js %}
+</head>
+<body>
+{% if project_list %}
+    <ul>
+    {% for project in project_list %}
+        <li><a href="/projects/{{ project.id }}/">{{ project.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No projects are available.</p>
+{% endif %}
+</body>
+</html>
